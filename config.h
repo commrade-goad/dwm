@@ -1,7 +1,9 @@
 /* See LICENSE file for copyright and license details. */
+#include <X11/XF86keysym.h>
+#include "movestack.c"
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
@@ -25,6 +27,15 @@ static const char *colors[][3]      = {
 	[SchemeNorm] = { col_gray4, col_gray1, col_gray2 },
 	[SchemeSel]  = { col_gray1, col_cyan,  col_cyan  },
 };
+
+static const char *up_vol[]   = { "pamixer-wrapper", "raise" , NULL };
+static const char *down_vol[] = { "pamixer-wrapper", "lower" , NULL };
+static const char *mute_vol[] = { "pamixer-wrapper", "toggle", NULL };
+
+static const char *brighter[] = { "brightnessctl-wrapper", "raise", NULL };
+static const char *dimmer[]   = { "brightnessctl-wrapper", "lower", NULL };
+
+static const char *emoji[] = { "dmenumoji", NULL };
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
@@ -77,8 +88,10 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+	{ MODKEY|ControlMask,           XK_h,      setmfact,       {.f = -0.05} },
+	{ MODKEY|ControlMask,           XK_l,      setmfact,       {.f = +0.05} },
+    { MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
+    { MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 	// { MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
@@ -93,6 +106,16 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+
+    { 0,         XK_Print, spawn,  SHCMD("xsc.sh") },
+    { ShiftMask, XK_Print, spawn,  SHCMD("xscsel.sh") },
+    { 0, XF86XK_AudioMute,         spawn, {.v = mute_vol } },
+    { 0, XF86XK_AudioLowerVolume,  spawn, {.v = down_vol } },
+    { 0, XF86XK_AudioRaiseVolume,  spawn, {.v = up_vol } },
+    { 0, XF86XK_MonBrightnessDown, spawn, {.v = dimmer } },
+    { 0, XF86XK_MonBrightnessUp,   spawn, {.v = brighter } },
+    { MODKEY, XK_period,           spawn, {.v = emoji } },
+
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
