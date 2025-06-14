@@ -124,6 +124,7 @@ static const Key keys[] = {
     { 0, XF86XK_AudioPlay,                 spawn, {.v = toggle_mpris} },
     { 0, XF86XK_AudioNext,                 spawn, {.v = next_mpris} },
     { 0, XF86XK_AudioPrev,                 spawn, {.v = prev_mpris} },
+    { MODKEY,                       XK_s,      togglesticky,   {0} },
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
