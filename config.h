@@ -37,6 +37,10 @@ static const char *dimmer[]   = { "brightnessctl-wrapper", "lower", NULL };
 
 static const char *emoji[] = { "dmenumoji", NULL };
 
+static const char *toggle_mpris[]   = {"playerctl", "play-pause", NULL};
+static const char *next_mpris[]     = {"playerctl", "next"      , NULL};
+static const char *prev_mpris[] = {"playerctl", "previous"  , NULL};
+
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
@@ -46,8 +50,8 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	// { "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	// { "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+    { "mpv",      NULL,       NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -88,8 +92,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY|ControlMask,           XK_l,      setmfact,       {.f = +0.05} },
+	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
     { MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
     { MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
 	// { MODKEY,                       XK_Return, zoom,           {0} },
@@ -107,14 +111,18 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 
-    { 0,         XK_Print, spawn,  SHCMD("xsc.sh") },
+    { 0        , XK_Print, spawn,  SHCMD("xsc.sh") },
     { ShiftMask, XK_Print, spawn,  SHCMD("xscsel.sh") },
-    { 0, XF86XK_AudioMute,         spawn, {.v = mute_vol } },
-    { 0, XF86XK_AudioLowerVolume,  spawn, {.v = down_vol } },
-    { 0, XF86XK_AudioRaiseVolume,  spawn, {.v = up_vol } },
-    { 0, XF86XK_MonBrightnessDown, spawn, {.v = dimmer } },
-    { 0, XF86XK_MonBrightnessUp,   spawn, {.v = brighter } },
-    { MODKEY, XK_period,           spawn, {.v = emoji } },
+    { 0        , XF86XK_AudioMute,         spawn, {.v = mute_vol } },
+    { 0        , XF86XK_AudioLowerVolume,  spawn, {.v = down_vol } },
+    { 0        , XF86XK_AudioRaiseVolume,  spawn, {.v = up_vol } },
+    { 0        , XF86XK_MonBrightnessDown, spawn, {.v = dimmer } },
+    { 0        , XF86XK_MonBrightnessUp,   spawn, {.v = brighter } },
+    { MODKEY   , XK_period,                spawn, {.v = emoji } },
+    { MODKEY|ShiftMask, XK_p,              spawn, {.v = toggle_mpris} },
+    { 0, XF86XK_AudioPlay,                 spawn, {.v = toggle_mpris} },
+    { 0, XF86XK_AudioNext,                 spawn, {.v = next_mpris} },
+    { 0, XF86XK_AudioPrev,                 spawn, {.v = prev_mpris} },
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
