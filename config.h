@@ -81,7 +81,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, NULL };
-static const char *termcmd[]  = { "kitty", NULL };
+static const char *termcmd[]  = { "st", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -113,6 +113,7 @@ static const Key keys[] = {
 
     { 0        , XK_Print, spawn,  SHCMD("xsc.sh") },
     { ShiftMask, XK_Print, spawn,  SHCMD("xscsel.sh") },
+
     { 0        , XF86XK_AudioMute,         spawn, {.v = mute_vol } },
     { 0        , XF86XK_AudioLowerVolume,  spawn, {.v = down_vol } },
     { 0        , XF86XK_AudioRaiseVolume,  spawn, {.v = up_vol } },
