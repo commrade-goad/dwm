@@ -17,11 +17,11 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 
 static const char *fonts[]          = { "Iosevka Nerd Font Mono:size=11" };
 static const char dmenufont[]       = "Iosevka Nerd Font Mono:size=11";
-static const char col_gray1[]       = "#1e1e1e";
-static const char col_gray2[]       = "#3e3e3e";
-static const char col_gray3[]       = "#afafaf";
-static const char col_gray4[]       = "#fafafa";
-static const char col_cyan[]        = "#C4B0C4";
+static const char col_gray1[]       = "#2D353B";
+static const char col_gray2[]       = "#3D484D";
+static const char col_gray3[]       = "#7A8478";
+static const char col_gray4[]       = "#D3C6AA";
+static const char col_cyan[]        = "#A7C080";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray4, col_gray1, col_gray2 },
