@@ -112,6 +112,8 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 
+    { MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
+
     { 0        , XK_Print, spawn,  SHCMD("xsc.sh") },
     { ShiftMask, XK_Print, spawn,  SHCMD("xscsel.sh") },
 
