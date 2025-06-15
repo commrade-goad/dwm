@@ -51,6 +51,7 @@ static const Rule rules[] = {
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
     { "mpv",      NULL,       NULL,       0,            1,           -1 },
+    { "firefox",  NULL,       NULL,       1<<1,         0,           -1 },
     { "vesktop",  NULL,       NULL,       1<<2,         0,           -1 },
 };
 
