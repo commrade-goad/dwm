@@ -1,49 +1,49 @@
-/* See LICENSE file for copyright and license details. */
 #include <X11/XF86keysym.h>
 #include "movestack.c"
 
-/* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
-static const unsigned int snap      = 32;       /* snap pixel */
-static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
-
-static const unsigned int barheight = 24;
-static const int showsystray        = 1;        /* 0 means no systray */
+/* some settings */
+static const unsigned int borderpx       = 2;   /* border pixel of windows */
+static const unsigned int snap           = 32;  /* snap pixel */
+static const int showbar                 = 1;   /* 0 means no bar */
+static const int topbar                  = 1;   /* 0 means bottom bar */
+static const int showsystray             = 1;   /* 0 means no systray */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayonleft = 0;    /* 0: systray in the right corner, >0: systray on left of status text */
+static const unsigned int systrayonleft  = 0;   /* 0: systray in the right corner, >0: systray on left of status text */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-
-static const char *fonts[]          = { "Iosevka Nerd Font Mono:size=11" };
-static const char dmenufont[]       = "Iosevka Nerd Font Mono:size=11";
-static const char col_gray1[]       = "#2D353B";
-static const char col_gray2[]       = "#3D484D";
-static const char col_gray3[]       = "#7A8478";
-static const char col_gray4[]       = "#D3C6AA";
-static const char col_cyan[]        = "#A7C080";
-static const char *colors[][3]      = {
+static const char *fonts[]               = { "Iosevka Nerd Font Mono:size=11" };
+static const char dmenufont[]            = "Iosevka Nerd Font Mono:size=11";
+static const char col_gray1[]            = "#2D353B";
+static const char col_gray2[]            = "#3D484D";
+static const char col_gray3[]            = "#7A8478";
+static const char col_gray4[]            = "#D3C6AA";
+static const char col_cyan[]             = "#A7C080";
+static const char *colors[][3]           =
+{
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray4, col_gray1, col_gray2 },
 	[SchemeSel]  = { col_gray1, col_cyan,  col_cyan  },
 };
 
-static const char *up_vol[]   = { "pamixer-wrapper", "raise" , NULL };
-static const char *down_vol[] = { "pamixer-wrapper", "lower" , NULL };
-static const char *mute_vol[] = { "pamixer-wrapper", "toggle", NULL };
+/* some commands */
+static const char *up_vol[]       = { "pamixer-wrapper",       "raise",      NULL };
+static const char *down_vol[]     = { "pamixer-wrapper",       "lower",      NULL };
+static const char *mute_vol[]     = { "pamixer-wrapper",       "toggle",     NULL };
+static const char *brighter[]     = { "brightnessctl-wrapper", "raise",      NULL };
+static const char *dimmer[]       = { "brightnessctl-wrapper", "lower",      NULL };
+static const char *emoji[]        = { "dmenumoji",                           NULL };
+static const char *toggle_mpris[] = {"playerctl",              "play-pause", NULL };
+static const char *next_mpris[]   = {"playerctl",              "next"      , NULL };
+static const char *prev_mpris[]   = {"playerctl",              "previous"  , NULL };
 
-static const char *brighter[] = { "brightnessctl-wrapper", "raise", NULL };
-static const char *dimmer[]   = { "brightnessctl-wrapper", "lower", NULL };
-
-static const char *emoji[] = { "dmenumoji", NULL };
-
-static const char *toggle_mpris[]   = {"playerctl", "play-pause", NULL};
-static const char *next_mpris[]     = {"playerctl", "next"      , NULL};
-static const char *prev_mpris[] = {"playerctl", "previous"  , NULL};
+static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, NULL };
+static const char *termcmd[]  = { "st", NULL };
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
+/* soem rule stuff */
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
@@ -56,9 +56,9 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
-static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const float mfact        = 0.55; /* factor of master area size [0.05..0.95] */
+static const int nmaster        = 1;    /* number of clients in master area */
+static const int resizehints    = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 static const Layout layouts[] = {
@@ -79,11 +79,6 @@ static const Layout layouts[] = {
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
-/* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray1, NULL };
-static const char *termcmd[]  = { "st", NULL };
-
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
@@ -97,7 +92,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
     { MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
     { MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
-	// { MODKEY,                       XK_Return, zoom,           {0} },
+	/*{ MODKEY,                       XK_Return, zoom,           {0} },*/
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_q,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
@@ -112,22 +107,20 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 
-    { MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
-
-    { 0        , XK_Print, spawn,  SHCMD("xsc.sh") },
-    { ShiftMask, XK_Print, spawn,  SHCMD("xscsel.sh") },
-
-    { 0        , XF86XK_AudioMute,         spawn, {.v = mute_vol } },
-    { 0        , XF86XK_AudioLowerVolume,  spawn, {.v = down_vol } },
-    { 0        , XF86XK_AudioRaiseVolume,  spawn, {.v = up_vol } },
-    { 0        , XF86XK_MonBrightnessDown, spawn, {.v = dimmer } },
-    { 0        , XF86XK_MonBrightnessUp,   spawn, {.v = brighter } },
-    { MODKEY   , XK_period,                spawn, {.v = emoji } },
-    { MODKEY|ShiftMask, XK_p,              spawn, {.v = toggle_mpris} },
-    { 0, XF86XK_AudioPlay,                 spawn, {.v = toggle_mpris} },
-    { 0, XF86XK_AudioNext,                 spawn, {.v = next_mpris} },
-    { 0, XF86XK_AudioPrev,                 spawn, {.v = prev_mpris} },
-    { MODKEY,                       XK_s,      togglesticky,   {0} },
+    { 0,                XF86XK_AudioMute,                 spawn,         {.v = mute_vol } },
+    { 0,                XF86XK_AudioLowerVolume,          spawn,         {.v = down_vol } },
+    { 0,                XF86XK_AudioRaiseVolume,          spawn,         {.v = up_vol } },
+    { 0,                XF86XK_MonBrightnessDown,         spawn,         {.v = dimmer } },
+    { 0,                XF86XK_MonBrightnessUp,           spawn,         {.v = brighter } },
+    { 0,                XF86XK_AudioPlay,                 spawn,         {.v = toggle_mpris} },
+    { 0,                XF86XK_AudioNext,                 spawn,         {.v = next_mpris} },
+    { 0,                XF86XK_AudioPrev,                 spawn,         {.v = prev_mpris} },
+    { MODKEY|ShiftMask, XK_f,                             togglefullscr, {0} },
+    { MODKEY,           XK_period,                        spawn,         {.v = emoji } },
+    { MODKEY|ShiftMask, XK_p,                             spawn,         {.v = toggle_mpris} },
+    { MODKEY,           XK_s,                             togglesticky,  {0} },
+    { 0,                XK_Print,                         spawn,         SHCMD("xsc.sh") },
+    { ShiftMask,        XK_Print,                         spawn,         SHCMD("xscsel.sh") },
 
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
