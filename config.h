@@ -4,6 +4,7 @@
 /* some settings */
 static const unsigned int borderpx       = 2;   /* border pixel of windows */
 static const unsigned int snap           = 32;  /* snap pixel */
+static const unsigned int gappx          = 4;        /* gaps between windows */
 static const int showbar                 = 1;   /* 0 means no bar */
 static const int topbar                  = 1;   /* 0 means bottom bar */
 static const int showsystray             = 1;   /* 0 means no systray */
@@ -42,6 +43,7 @@ static const char *termcmd[]  = { "st", NULL };
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+// static const char *tags[] = { "一", "二", "三", "四", "五", "六", "七", "八", "九" };
 
 /* soem rule stuff */
 static const Rule rules[] = {
@@ -106,6 +108,9 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	{ MODKEY,                       XK_minus,  setgaps,        {.i = -1 } },
+	{ MODKEY,                       XK_equal,  setgaps,        {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_equal,  _setgapsfr,     {.i = gappx  } },
 
     { 0,                XF86XK_AudioMute,                 spawn,         {.v = mute_vol } },
     { 0,                XF86XK_AudioLowerVolume,          spawn,         {.v = down_vol } },
