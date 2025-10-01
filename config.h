@@ -2,24 +2,25 @@
 #include "movestack.c"
 
 /* some settings */
-static unsigned int borderpx       = 2;   /* border pixel of windows */
-static unsigned int snap           = 32;  /* snap pixel */
-static const unsigned int gappx    = 0;        /* gaps between windows */
-static int showbar                 = 1;   /* 0 means no bar */
-static int topbar                  = 1;   /* 0 means bottom bar */
+static unsigned int borderpx             = 2;   /* border pixel of windows */
+static unsigned int snap                 = 32;  /* snap pixel */
+static const unsigned int gappx          = 0;        /* gaps between windows */
+static int showbar                       = 1;   /* 0 means no bar */
+static int topbar                        = 1;   /* 0 means bottom bar */
 static const int showsystray             = 1;   /* 0 means no systray */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayonleft  = 0;   /* 0: systray in the right corner, >0: systray on left of status text */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-static const char *fonts[]               = { "IosevkaTerm Nerd Font Mono:size=11" };
+static const char *fonts[]               = { "IosevkaTerm Nerd Font Mono:size=11", "monospace:size=11" };
 static const char dmenufont[]            = "IosevkaTerm Nerd Font Mono:size=11";
-static char normbgcolor[]           = "#222222";
-static char normbordercolor[]       = "#444444";
-static char normfgcolor[]           = "#bbbbbb";
-static char selfgcolor[]            = "#eeeeee";
-static char selbordercolor[]        = "#005577";
-static char selbgcolor[]            = "#005577";
+static const int refreshrate             = 120;  /* refresh rate (per second) for client move/resize */
+static char normbgcolor[]                = "#222222";
+static char normbordercolor[]            = "#444444";
+static char normfgcolor[]                = "#bbbbbb";
+static char selfgcolor[]                 = "#eeeeee";
+static char selbordercolor[]             = "#005577";
+static char selbgcolor[]                 = "#005577";
 static char *colors[][3] = {
        /*               fg           bg           border   */
        [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
@@ -45,16 +46,17 @@ static const char *termcmd[]  = { "st", NULL };
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 // static const char *tags[] = { "一", "二", "三", "四", "五", "六", "七", "八", "九" };
 
-/* soem rule stuff */
+/* some rule stuff */
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-    { "mpv",      NULL,       NULL,       0,            1,           -1 },
-    { "firefox",  NULL,       NULL,       1<<1,         0,           -1 },
-    { "vesktop",  NULL,       NULL,       1<<2,         0,           -1 },
+    { "mpv"         ,  NULL,       NULL,       0,            1,           -1 },
+    { "firefox"     ,  NULL,       NULL,       1<<1,         0,           -1 },
+    { "vesktop"     ,  NULL,       NULL,       1<<2,         0,           -1 },
+    { "pavucontrol" ,  NULL,       NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -176,4 +178,3 @@ static const Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
