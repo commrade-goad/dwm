@@ -12,8 +12,8 @@ static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows sel
 static const unsigned int systrayonleft  = 0;   /* 0: systray in the right corner, >0: systray on left of status text */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-static const char *fonts[]               = { "IosevkaTerm Nerd Font Mono:size=11", "monospace:size=11" };
-static const char dmenufont[]            = "IosevkaTerm Nerd Font Mono:size=11";
+static const char *fonts[]               = { "monospace:size=10" };
+static const char dmenufont[]            = "monospace:size=10";
 static const int refreshrate             = 120;  /* refresh rate (per second) for client move/resize */
 static char normbgcolor[]                = "#222222";
 static char normbordercolor[]            = "#444444";
@@ -21,16 +21,18 @@ static char normfgcolor[]                = "#bbbbbb";
 static char selfgcolor[]                 = "#eeeeee";
 static char selbordercolor[]             = "#005577";
 static char selbgcolor[]                 = "#005577";
-static char *colors[][3] = {
+static char *colors[][3]                 = {
        /*               fg           bg           border   */
        [SchemeNorm] = { normfgcolor, normbgcolor, normbordercolor },
        [SchemeSel]  = { selfgcolor,  selbgcolor,  selbordercolor  },
 };
 
 /* some commands */
-static const char *up_vol[]       = { "pamixer-wrapper",       "raise",      NULL };
-static const char *down_vol[]     = { "pamixer-wrapper",       "lower",      NULL };
-static const char *mute_vol[]     = { "pamixer-wrapper",       "toggle",     NULL };
+static const char *up_vol[]       = { "pamixer-wrapper",       "raise",                  NULL };
+static const char *down_vol[]     = { "pamixer-wrapper",       "lower",                  NULL };
+static const char *mute_vol[]     = { "pamixer-wrapper",       "toggle",                 NULL };
+static const char *mute_mic_vol[] = { "pamixer",               "--default-source", "-t", NULL };
+
 static const char *brighter[]     = { "brightnessctl-wrapper", "raise",      NULL };
 static const char *dimmer[]       = { "brightnessctl-wrapper", "lower",      NULL };
 static const char *toggle_mpris[] = {"playerctl",              "play-pause", NULL };
@@ -40,7 +42,7 @@ static const char *prev_mpris[]   = {"playerctl",              "previous"  , NUL
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *emoji[]    = { "dmenumoji", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "alacritty", NULL };
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
@@ -97,7 +99,7 @@ ResourcePref resources[] = {
     { "snap",          		INTEGER, &snap },
     { "showbar",          	INTEGER, &showbar },
     { "topbar",          	INTEGER, &topbar },
-    { "nmaster",          	INTEGER, &nmaster },
+    /* { "nmaster",          	INTEGER, &nmaster }, */
     { "resizehints",       	INTEGER, &resizehints },
     /* { "mfact",      	 	FLOAT,   &mfact }, */
 };
@@ -133,6 +135,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_equal,  setgaps,           {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_equal,  _setgapsfr,        {.i = gappx  } },
 
+
+    { 0,                  XF86XK_AudioMicMute,              spawn,         {.v = mute_mic_vol } },
     { 0,                  XF86XK_AudioMute,                 spawn,         {.v = mute_vol } },
     { 0,                  XF86XK_AudioLowerVolume,          spawn,         {.v = down_vol } },
     { 0,                  XF86XK_AudioRaiseVolume,          spawn,         {.v = up_vol } },
