@@ -30,10 +30,10 @@ static char *colors[][3]                 = {
 };
 
 /* some commands */
-static const char *up_vol[]       = { "pamixer-wrapper",       "raise",                  NULL };
-static const char *down_vol[]     = { "pamixer-wrapper",       "lower",                  NULL };
-static const char *mute_vol[]     = { "pamixer-wrapper",       "toggle",                 NULL };
-static const char *mute_mic_vol[] = { "pamixer",               "--default-source", "-t", NULL };
+static const char *up_vol[]       = { "pamixer-wrapper",       "raise",                         NULL };
+static const char *down_vol[]     = { "pamixer-wrapper",       "lower",                         NULL };
+static const char *mute_vol[]     = { "pamixer-wrapper",       "toggle",                        NULL };
+static const char *mute_mic_vol[] = { "pactl", "set-source-mute", "@DEFAULT_SOURCE@", "toggle", NULL };
 
 static const char *brighter[]     = { "brightnessctl-wrapper", "raise",      NULL };
 static const char *dimmer[]       = { "brightnessctl-wrapper", "lower",      NULL };
