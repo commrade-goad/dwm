@@ -2,6 +2,7 @@
 #include "movestack.c"
 
 /* some settings */
+#define TERMINAL "st"
 #define USED_FONT "CodeNewRoman Nerd Font Mono:size=11"
 
 static unsigned int borderpx             = 2;   /* border pixel of windows */
@@ -15,7 +16,7 @@ static const unsigned int systrayonleft  = 0;   /* 0: systray in the right corne
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const char *fonts[]               = { USED_FONT };
-static const char dmenufont[]            = USED_FONT;
+// static const char dmenufont[]            = USED_FONT;
 static const int refreshrate             = 120;  /* refresh rate (per second) for client move/resize */
 static char normbgcolor[]                = "#222222";
 static char normbordercolor[]            = "#444444";
@@ -39,9 +40,11 @@ static const char *brighter[]     = { "brightnessctl-wrapper", "raise",      NUL
 static const char *dimmer[]       = { "brightnessctl-wrapper", "lower",      NULL };
 
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *emoji[]    = { "dmenumoji", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "st", NULL };
+// static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
+// static const char *emoji[]    = { "dmenumoji", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
+static const char *dmenucmd[] = { TERMINAL, "-c", "dialog", "-e", "tmenu_runner", NULL };
+static const char *emoji[]    = { TERMINAL, "-c", "dialog", "-e", "dmenumoji"      , NULL };
+static const char *termcmd[]  = { TERMINAL, NULL };
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
@@ -54,6 +57,7 @@ static const Rule rules[] = {
 	 */
 	/* class           instance    title       tags mask     isfloating   monitor */
     { "mpv"         ,  NULL,       NULL,       0,            1,           -1 },
+    { "dialog"      ,  NULL,       NULL,       0,            1,           -1 },
     { "firefox"     ,  NULL,       NULL,       1<<1,         0,           -1 },
     { "discord"     ,  NULL,       NULL,       1<<2,         0,           -1 },
     { "vesktop"     ,  NULL,       NULL,       1<<2,         0,           -1 },
@@ -102,6 +106,7 @@ ResourcePref resources[] = {
 
 static const Key keys[] = {
 	/* modifier                     key        function           argument */
+	// { MODKEY,                       XK_p,      spawn,             {.v = dmenucmd } },
 	{ MODKEY,                       XK_p,      spawn,             {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return, spawn,             {.v = termcmd } },
 	{ MODKEY,                       XK_b,      togglebar,         {0} },
