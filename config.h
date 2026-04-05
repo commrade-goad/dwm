@@ -2,7 +2,7 @@
 #include "movestack.c"
 
 /* some settings */
-#define USED_FONT "ComicShannsMono Nerd Font Mono:size=11"
+#define USED_FONT "CodeNewRoman Nerd Font Mono:size=11"
 
 static unsigned int borderpx             = 2;   /* border pixel of windows */
 static unsigned int snap                 = 32;  /* snap pixel */
@@ -37,9 +37,6 @@ static const char *mute_mic_vol[] = { "pactl", "set-source-mute", "@DEFAULT_SOUR
 
 static const char *brighter[]     = { "brightnessctl-wrapper", "raise",      NULL };
 static const char *dimmer[]       = { "brightnessctl-wrapper", "lower",      NULL };
-static const char *toggle_mpris[] = {"playerctl",              "play-pause", NULL };
-static const char *next_mpris[]   = {"playerctl",              "next"      , NULL };
-static const char *prev_mpris[]   = {"playerctl",              "previous"  , NULL };
 
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
@@ -48,7 +45,6 @@ static const char *termcmd[]  = { "st", NULL };
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-// static const char *tags[] = { "一", "二", "三", "四", "五", "六", "七", "八", "九" };
 
 /* some rule stuff */
 static const Rule rules[] = {
@@ -56,12 +52,11 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
+	/* class           instance    title       tags mask     isfloating   monitor */
     { "mpv"         ,  NULL,       NULL,       0,            1,           -1 },
     { "firefox"     ,  NULL,       NULL,       1<<1,         0,           -1 },
-    { "vesktop"     ,  NULL,       NULL,       1<<2,         0,           -1 },
     { "discord"     ,  NULL,       NULL,       1<<2,         0,           -1 },
-    { "pavucontrol" ,  NULL,       NULL,       0,            1,           -1 },
+    { "vesktop"     ,  NULL,       NULL,       1<<2,         0,           -1 },
 };
 
 /* layout(s) */
@@ -102,9 +97,7 @@ ResourcePref resources[] = {
     { "snap",          		INTEGER, &snap },
     { "showbar",          	INTEGER, &showbar },
     { "topbar",          	INTEGER, &topbar },
-    /* { "nmaster",          	INTEGER, &nmaster }, */
     { "resizehints",       	INTEGER, &resizehints },
-    /* { "mfact",      	 	FLOAT,   &mfact }, */
 };
 
 static const Key keys[] = {
@@ -145,12 +138,8 @@ static const Key keys[] = {
     { 0,                  XF86XK_AudioRaiseVolume,          spawn,         {.v = up_vol } },
     { 0,                  XF86XK_MonBrightnessDown,         spawn,         {.v = dimmer } },
     { 0,                  XF86XK_MonBrightnessUp,           spawn,         {.v = brighter } },
-    { 0,                  XF86XK_AudioPlay,                 spawn,         {.v = toggle_mpris} },
-    { 0,                  XF86XK_AudioNext,                 spawn,         {.v = next_mpris} },
-    { 0,                  XF86XK_AudioPrev,                 spawn,         {.v = prev_mpris} },
     { MODKEY|ShiftMask,   XK_f,                             togglefullscr, {0} },
     { MODKEY,             XK_period,                        spawn,         {.v = emoji } },
-    { MODKEY|ShiftMask,   XK_p,                             spawn,         {.v = toggle_mpris} },
     { MODKEY,             XK_s,                             togglesticky,  {0} },
     { 0,                  XK_Print,                         spawn,         SHCMD("xsc.sh") },
     { ShiftMask,          XK_Print,                         spawn,         SHCMD("xscsel.sh") },
